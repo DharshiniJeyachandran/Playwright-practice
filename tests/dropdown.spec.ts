@@ -31,9 +31,11 @@ test('Custom dropdown', async ({page}) => {
     await page.locator(".oxd-main-menu-item", {hasText: 'Leave'}).click();
     await page.waitForSelector(".oxd-main-menu-item");
     await expect (page.locator('.oxd-table-filter-title', {hasText:'Leave List'})).toBeVisible();
+    await page.waitForSelector('.oxd-table-filter-title');
+    await page.locator(".oxd-select-text").first().click();
     await page.locator(".oxd-select-option", {hasText:'Scheduled'}).click();
-    await page.waitForSelector(".oxd-select-option") ;
-    await expect (page.locator(".oxd-multiselect-chips-selected, {hastext : 'Scheduled'}")).toBeVisible();
+    // await page.waitForSelector ((".oxd-select-option", {hasText:'Scheduled'}) ;
+    await expect (page.locator(".oxd-multiselect-chips-selected", {hasText : 'Scheduled'})).toBeVisible();
     await page.waitForTimeout(5000);
 
 })
