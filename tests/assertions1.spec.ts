@@ -1,3 +1,4 @@
+import { LIVE_ANNOUNCER_DEFAULT_OPTIONS } from '@angular/cdk/a11y';
 import{test,expect} from '@playwright/test'
 
 test('assertions', async ({page}) =>{
@@ -11,3 +12,6 @@ test('assertions', async ({page}) =>{
     await page.getByLabel(" Option 1").check();
     await expect.soft(page.getByLabel (" Option 1")).toBeChecked();
 } )
+
+
+

@@ -53,7 +53,7 @@ test('mouse scroll', async ({page}) => {
  await page.waitForTimeout(5000);
 
 })
-test.only('mouse actions', async ({ page }) => {
+test('mouse actions', async ({ page }) => {
     await page.goto("https://demoqa.com/buttons");
     await page.locator(".text").getByText("Text Box").click();
     await page.locator('.text').getByText("Buttons").click();
@@ -67,4 +67,23 @@ test.only('mouse actions', async ({ page }) => {
     await expect (page.locator("#doubleClickMessage")).toHaveText("You have done a double click");
 
     await page.waitForTimeout(5000);
+});
+
+test('drag and drop1', async ({page}) => {
+   await page.goto("https://letcode.in/droppable");
+//    await page.locator("#draggable").dragTo("#droppable");
+  await page.dragAndDrop("#draggable","#droppable");
+   await page.waitForTimeout(5000);
+}) 
+
+test('drag andd drop1', async ({ page }) => {
+  await page.goto('https://letcode.in/droppable');
+
+  // Perform drag and drop
+  await page.dragAndDrop('#draggable', '#droppable');
+
+//   // Optional: verify text changed
+//   await expect(page.locator('#droppable')).toHaveText('Dropped!');
+
+  await page.waitForTimeout(5000); // Just to visually confirm
 });
