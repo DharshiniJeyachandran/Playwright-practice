@@ -1,4 +1,5 @@
 import {test,expect} from '@playwright/test'
+import { count } from 'console';
 
 test('dropdown', async ({page}) => {
     await page.goto("https://trytestingthis.netlify.app/");
@@ -40,7 +41,7 @@ test('Custom dropdown', async ({page}) => {
 
 })
 
-test.only('Amazon dropdown', async({page}) =>{
+test('Amazon dropdown', async({page}) =>{
     await page.goto("https://www.amazon.com.be/");
     await page.getByTitle("English").click();
     await page.locator("#sp-cc-rejectall-link").click();
@@ -56,4 +57,20 @@ test.only('Amazon dropdown', async({page}) =>{
     await page.waitForTimeout(5000);
     await page.close();
 
+})
+
+test.only('letcode dropdown', async ({page}) => {
+    await page.goto("https://letcode.in/dropdowns");
+    await expect(page.locator(".title.has-text-centered")).toHaveText("Dropdown");
+    await page.locator("#fruits").selectOption("Apple");
+    await page.getByText("You have selected Apple").isVisible();
+    await page.locator("#superheros").selectOption("The Avengers");
+    await page.getByText("You have selected The Avengers").isVisible();
+  
+    // To print the languages
+    const Languages = await page.locator("#lang").allTextContents();
+    console.log(`The languages are: ${Languages}`);
+    await page.locator("#lang").selectOption("C#");
+    await page.locator("#country").selectOption("India");
+    await page.waitForTimeout(5000);
 })
