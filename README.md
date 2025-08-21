@@ -12,7 +12,7 @@ npm
  (comes with Node.js)
  
 🎭 **Setup instructions**
-git clone <[your-repo-url](https://github.com/DharshiniJeyachandran/Playwright-practice.git)>
+git clone https://github.com/DharshiniJeyachandran/Playwright-practice.git
 cd pw-practice-app
 npm install
 npx playwright install
