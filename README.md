@@ -2,7 +2,6 @@
 
 This repository contains end-to-end automation tests built with Playwright and TypeScript.
 The tests cover different web UI functionalities such as form inputs, checkboxes, dropdowns, frames, mouse/keyboard actions, assertions, and more.
-The project is designed for learning and practicing Playwright automation.
 
 🎭 **Prerequisites**
 
