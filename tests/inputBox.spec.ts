@@ -18,7 +18,7 @@ test.skip('inputBox', async ({page})=> {
     await page.locator('.button.is-primary').click();
 }) 
 
-test.only('Radio button', async ({page})=>{
+test('Radio button', async ({page})=>{
 await page.goto("https://letcode.in/test");
 await page.getByText(" Toggle ").click();
 await expect (page).toHaveTitle("Radio Buttons | LetCode with Koushik");
@@ -29,4 +29,23 @@ await expect (page.locator("#maybe")).toBeDisabled();
 
 await page.locator("#going").check();
 await expect (page.locator("#going")).toBeChecked();
+})
+
+test.only('fields', async ({page}) => {
+    await page.goto("https://testpages.eviltester.com/styled/basic-html-form-test.html");
+    await expect (page).toHaveTitle("HTML Form Elements");
+    await page.getByText("Basic HTML Form Example").isVisible();
+        await page.locator("input[name='username']").fill("Dharsh");
+        await page.locator("input[type='password']").fill("Test1234");
+        await page.locator("textarea[name='comments']").clear();
+        await page.locator("textarea[name='comments']").fill("Hey! you got this");
+        await page.locator("input[value='cb1']").check();
+        await expect(page.locator("input[value='cb3']")).toBeChecked();
+        await page.locator("input[value='cb3']").uncheck();
+        await page.locator("input[value='rd1']").check();
+        await page.locator("input[value='rd2']").uncheck();
+
+        await page.locator("select[name='multipleselect[]']").selectOption(["Selection Item 1", "Selection Item 2"]);  
+        await page.locator("select[name='dropdown']").selectOption("Drop Down Item 6");
+        await page.waitForTimeout(5000);
 })

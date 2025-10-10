@@ -86,4 +86,5 @@ test('drag andd drop1', async ({ page }) => {
 //   await expect(page.locator('#droppable')).toHaveText('Dropped!');
 
   await page.waitForTimeout(5000); // Just to visually confirm
+
 });
