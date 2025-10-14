@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
-import { sign } from "crypto";
+import { first } from "rxjs-compat/operator/first";
+
 
 test("handson", async ({ page }) => {
   await page.goto("https://www.saucedemo.com/");
@@ -36,7 +37,7 @@ test("Assertions", async ({ page }) => {
   });
 });
 
-test.only("Amazon validations", async ({ page }) => {
+test("Amazon validations", async ({ page }) => {
   await page.goto("https://www.amazon.com.be/");
   await page.getByTitle("English").click();
   await page.locator("#sp-cc-rejectall-link").click();
@@ -68,4 +69,60 @@ test.only("Amazon validations", async ({ page }) => {
   await page.locator("#searchDropdownBox").selectOption({label: "Baby"});
 
   await expect(page.getByRole("link", {name: "0 items in shopping basket"})).toBeVisible();
+})
+
+
+test("test validations", async ({page}) => {
+  await page.goto("https://testpages.eviltester.com/styled/reference/input.html");
+  await expect(page.getByRole("heading", {name: "Input Elements - HTML Testing Reference"})).toBeVisible();
+  await expect(page.getByText("Basic Controls")).toBeVisible();
+  await page.getByRole("checkbox", {name: "checkbox"}).check();
+  await expect(page.getByText("Radio 1")).not.toBeChecked();
+  await (page.getByText("Radio 2")).check();
+ await expect (page.getByText("Text Controls")).toBeVisible();
+  await page.getByRole("textbox",{name: "text"}).fill("Dharsh");
+  await page.getByRole("searchbox", {name: "search"}).fill("Job");
+  await page.getByRole("textbox",{name:"password"}).fill("password@30");
+    await page.locator('input[type="email"]').fill('dharsh@gmail.com');
+    await page.waitForTimeout(3000);
+  await page.locator('input[type="url"]').fill('https://www.amazon.com.be/');
+  await page.getByRole("textbox",{name:"tel"}).fill("01234567789");
+  await expect( page.getByText("Number Controls")).toBeVisible();
+  await page.getByRole("spinbutton", {name:"number"}).fill("22");
+  await expect(page.getByText("Special Format Controls")).toBeVisible();
+  await page.getByRole("button",{name:"submit"}).click();
+
+  await page.waitForTimeout(3000);
+})
+
+test.only("let code- input form", async({page}) => {
+  await page.goto("https://letcode.in/forms");
+  await expect(page.getByRole("heading", {name:"Form"})).toBeVisible();
+  await expect(page.getByText("First Name")).toBeVisible();
+  await expect(page.getByText("Last Name")).toBeVisible();
+  const firstname = await page.locator("#firstname");
+  await expect(firstname).toBeEnabled();
+  await (firstname).fill("Dharshini");
+
+ const lastname = await page.locator("#lasttname");
+ await expect (lastname).toBeEnabled();
+ await (lastname).fill("Jeyachandran");
+
+ const email = await page.getByRole("textbox",{name:"Email input"});
+ await (email).fill("hello@gmail.com");
+
+ await page.getByRole("textbox",{name:"Phone Number"}).fill("01234567798");
+ await page.getByRole("textbox",{name: "Address Line-1"}).fill("P Sherman,43 Wallaby Way");
+ await page.getByRole("textbox",{name:"Address Line-2"}).fill("Sydney");
+ await page.getByRole("textbox",{name:"State"}).fill("Sydneyy");
+ await page.getByRole("textbox",{name: "Postal-Code"}).fill("7000");
+await page.locator('#Date').fill('1995-07-15');
+const gender= await page.locator("#gender");
+await expect(gender).toBeVisible();
+await page.getByRole("radio",{name:"female"}).click();
+await page.locator('input[type="checkbox"]').click();
+await page.getByRole("button",{name:"submit"}).click();
+await page.screenshot({path: "Screenshots/letcodeform.png"});
+await page.waitForTimeout(3000);
+
 })
