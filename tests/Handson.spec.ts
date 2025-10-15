@@ -1,4 +1,6 @@
+import { TmplAstBoundEvent } from "@angular/compiler";
 import { test, expect } from "@playwright/test";
+import { TbodyEditDeleteComponent } from "ng2-smart-table/lib/components/tbody/cells/edit-delete.component";
 import { first } from "rxjs-compat/operator/first";
 
 
@@ -95,7 +97,7 @@ test("test validations", async ({page}) => {
   await page.waitForTimeout(3000);
 })
 
-test.only("let code- input form", async({page}) => {
+test("let code- input form", async({page}) => {
   await page.goto("https://letcode.in/forms");
   await expect(page.getByRole("heading", {name:"Form"})).toBeVisible();
   await expect(page.getByText("First Name")).toBeVisible();
@@ -126,3 +128,42 @@ await page.screenshot({path: "Screenshots/letcodeform.png"});
 await page.waitForTimeout(3000);
 
 })
+
+test("radiobutton & checkbox", async ({page}) => {
+  await page.goto("https://letcode.in/radio");
+  await expect(page).toHaveTitle("Radio Buttons | LetCode with Koushik");
+  await expect(page.getByRole("img",{name:"letcode"})).toBeVisible();
+  await expect(page.getByText("Select any one")).toBeVisible();
+  await page.locator("#yes").check();
+  await expect(page.locator("#no")).not.toBeChecked();
+  await expect (page.getByText("Cofirm you can select only one radio button")).toBeVisible();
+  await page.locator('input[id="one"]').check();
+  await expect(page.locator('input[id="two"]')).not.toBeChecked();
+  await expect(page.getByText("Find the bug")).toBeVisible();
+  await expect(page.locator("#nobug")).not.toBeChecked();
+  const bug =   await (page.locator("#bug"));
+  await expect(bug).not.toBeChecked();
+  await bug.check();
+  await expect (bug).toBeChecked();
+  await expect (page.getByText("Find which one is selected")).toBeVisible();
+  await expect (page.getByRole("radio",{name:"foo"})).not.toBeChecked();
+  await expect (page.locator("#notfoo")).toBeChecked();
+  await expect(page.getByText("Confirm last field is disabled")).toBeVisible();
+  await expect(page.locator('input[id="going"]')).not.toBeChecked();
+  await expect (page.locator('input[id="notG"]')).not.toBeChecked();
+  await expect(page.locator('input[id="maybe"]')).toBeDisabled();
+  await expect (page.getByText("Find if the checkbox is selected?")).toBeVisible();
+  await expect(page.getByText("Remember me")).toBeChecked();
+  await expect (page.getByText("Accept the T&C")).toBeVisible();
+  await page.getByText("I agree to the").check();
+})
+
+test.only('buttons', async({page}) => {
+  await page.goto("https://letcode.in/button");
+  await expect (page.getByRole("img",{name:"letcode"})).toBeVisible();
+  await expect(page.locator(".title.has-text-centered")).toBeVisible(); 
+  await expect(page.getByRole("button",{name:"Goto Home"})).toBeVisible(); 
+  await expect(page.getByText("Get the X & Y co-ordinates")).toBeVisible();
+  await expect(page.getByRole("button",{name:"Find Location"})).toBeVisible();
+  await expect(page.getByRole("button",{name:"Disabled"})).toBeDisabled();
+}) 
