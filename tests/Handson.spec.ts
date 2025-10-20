@@ -1,6 +1,7 @@
 import { TmplAstBoundEvent } from "@angular/compiler";
 import { test, expect } from "@playwright/test";
 import { count } from "console";
+import { ENETRESET } from "constants";
 import { TbodyEditDeleteComponent } from "ng2-smart-table/lib/components/tbody/cells/edit-delete.component";
 import { first } from "rxjs-compat/operator/first";
 
@@ -192,19 +193,72 @@ test("buttons", async ({ page }) => {
   await expect(page.getByRole("button", { name: "Disabled" })).toBeDisabled();
 });
 
-test.only("dropdown - validations", async ({ page }) => {
+test("dropdown - validations", async ({ page }) => {
   await page.goto("https://letcode.in/dropdowns");
   await page.locator("#fruits").selectOption("Banana");
   await expect(page.getByText("You have selected Banana")).toBeVisible();
   await expect(page.getByText("Select your super hero's")).toBeVisible();
   await page.locator("#superheros").selectOption("Guardians of the Galaxy");
-  await expect(page.getByText("You have selected Guardians of the Galaxy")).toBeVisible();
-  const programmingLang = await page.getByText("Select the last programming language and print all the options");
+  await expect(
+    page.getByText("You have selected Guardians of the Galaxy")
+  ).toBeVisible();
+  const programmingLang = await page.getByText(
+    "Select the last programming language and print all the options"
+  );
   await expect(programmingLang).toBeVisible();
   const listOfProgramminglang = await page.locator("#lang").allTextContents();
   console.log(`The programming languages are: ${listOfProgramminglang}`);
-  await expect (page.getByText("Select India using value & print the selected value")).toBeVisible();
+  await expect(
+    page.getByText("Select India using value & print the selected value")
+  ).toBeVisible();
   await page.locator("#country").selectOption("India");
-  const country =  await page.locator("#country").selectOption("India");
+  const country = await page.locator("#country").selectOption("India");
   await page.waitForTimeout(3000);
 });
+
+test("telenet - storefinder", async ({ page }) => {
+  await page.goto("https://www2.telenet.be/residential/nl");
+  await page.getByRole("button", { name: "Alle cookies weigeren" }).click();
+  await expect(page).toHaveTitle(
+    "Supersnel internet, met of zonder mobiele telefonie | Telenet"
+  );
+  await expect(page.locator(".hidden-mobile-tablet")).toBeVisible();
+  await page.getByText("Zoek een Telenet-winkel").click();
+  await page.waitForTimeout(3000);
+  await expect(page.getByText("Telenet-winkels in de buurt")).toBeVisible();
+  await expect(page.locator("#store-finder-search-desktop")).toBeVisible();
+  const bruulStore = await page.getByText("Telenet Mechelen");
+  await expect(bruulStore).toBeVisible();
+  await bruulStore.click();
+  await expect(page.getByText("Openingsuren")).toBeVisible();
+  await page.getByText("Een afspraak maken").click();
+  await expect(page.locator(".createAppointmentsPagec")).toBeVisible();
+  await page.waitForTimeout(4000);
+});
+
+test.only("telenet -homepage", async ({ page }) => {
+  await page.goto("https://www2.telenet.be/residential/nl");
+  await page.getByRole("button", { name: "Alle cookies weigeren" }).click();
+  await expect(page).toHaveTitle("Supersnel internet, met of zonder mobiele telefonie | Telenet");
+  await expect(page.locator(".hidden-mobile-tablet")).toBeVisible();
+  await expect(page.getByRole("link", { name: "Particulieren" })).toBeVisible();
+  await expect(page.getByRole("heading",{name:"Wat zoek je?"})).toBeVisible();
+  await page.getByRole("searchbox",{name:"Zoek"}).click();
+  const zoek = await page.getByRole("searchbox",{name:"Zoek"});
+  await (zoek).fill("iphone 17");
+  await (zoek).press("Enter");
+  await expect(page.getByTestId("search-result")).toBeVisible();
+  const zelfstandingen = await page.getByRole("radio",{name:"Zelfstandigen"});
+  await expect(zelfstandingen).toBeVisible();
+  await expect(page.getByRole("checkbox",{name:"Toestellen"})).toBeVisible();
+  await expect(page.getByRole("link",{name:"Alle hardware bekijken"})).toBeVisible();
+  await page.getByText("1329").click();
+  await expect(page.getByRole("heading",{name:"Apple iPhone 17 Pro Max 256GB Deep Blue"})).toBeVisible();
+  await expect(page.getByRole("link", {name: "Specificaties"})).toBeVisible();
+  await expect(page.getByText("Kies de kleur:")).toBeVisible();
+  await page.getByText("Oranje").click();
+  await expect(page.getByRole("heading",{name:"Apple iPhone 17 Pro Max 256GB Cosmic Orange"})).toBeVisible();
+  await page.screenshot({path: 'Screenshots/telenet.png'});
+  await page.waitForTimeout(4000);
+});
+
